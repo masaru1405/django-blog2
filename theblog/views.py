@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Post
+from .models import Post, Category
 from .forms import PostForm, EditForm
 
 
@@ -37,3 +37,9 @@ class PostDelete(LoginRequiredMixin, DeleteView):
   template_name = 'theblog/post_delete.html'
   success_url = reverse_lazy('home')
   login_url = 'login'
+
+class CategoryCreate(LoginRequiredMixin, CreateView):
+  model = Category
+  template_name = 'theblog/category_new.html'
+  fields = '__all__'
+  success_url = 'home'

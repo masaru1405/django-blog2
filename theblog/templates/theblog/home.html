@@ -5,8 +5,13 @@
 
 <ul>
   {% for post in posts %}
-    <li><a href="{% url 'detail_post' post.id %}">{{post.title}}</a></li>
-    <p>{{post.body|slice:":100"}}</p>
+    <li>
+      <a href="{% url 'detail_post' post.id %}">{{post.title}}</a>
+      - <small>{{post.category}}</small>
+      - <small>{{post.author}}</small>
+      - <small>{{post.create}}</small>
+    </li>
+    <p>{{post.body|slice:":100"|safe}}</p>
   {% endfor %}
 </ul>
 {% endblock %}
