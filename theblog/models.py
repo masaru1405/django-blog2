@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+
 from datetime import datetime, date
 
 class Category(models.Model):
@@ -8,6 +9,11 @@ class Category(models.Model):
 
   def __str__(self):
     return self.name
+  
+  #https://stackoverflow.com/questions/36330677/django-model-set-default-charfield-in-lowercase
+  def save(self, *args, **kwargs):
+    self.name = self.name.lower()
+    return super(Category, self).save(*args, **kwargs)
   
   class Meta:
     verbose_name = 'Category'
@@ -27,4 +33,6 @@ class Post(models.Model):
   #Após as ações de criar e editar, irá retornar para a paǵina de detail 
   #como se fosse o atributo 'success_url' em views
   def get_absolute_url(self):
-    return reverse('detail_post', args=(str(self.id)))
+    return reverse('detail_post', args=[str(self.id)])
+
+
