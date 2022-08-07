@@ -43,3 +43,8 @@ class CategoryCreate(LoginRequiredMixin, CreateView):
   template_name = 'theblog/category_new.html'
   fields = '__all__'
   success_url = 'home'
+
+def CategoryView(request, category):
+  category_post = Post.objects.filter(category=category)
+  context = {'category': category, 'category_post': category_post}
+  return render(request, 'theblog/categories.html', context)

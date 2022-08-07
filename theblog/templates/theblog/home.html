@@ -7,7 +7,7 @@
   {% for post in posts %}
     <li>
       <a href="{% url 'detail_post' post.id %}">{{post.title}}</a>
-      - <small>{{post.category}}</small>
+      - <small><a href="{% url 'category' post.category %}">{{post.category}}</a></small>
       - <small>{{post.author}}</small>
       - <small>{{post.create}}</small>
     </li>

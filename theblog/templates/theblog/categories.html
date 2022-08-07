@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   {% if category_post %}
+      <h1>{{category|capfirst}}</h1>
+      <ul>
+         {% for post in category_post %}
+         <li>
+            <a href="{% url 'detail_post' post.id %}">{{post.title}}</a>
+            - <small>{{post.category}}</small>
+            - <small>{{post.author}}</small>
+            - <small>{{post.create}}</small>
+         </li>
+         <p>{{post.body|slice:":100"|safe}}</p>
+         {% endfor %}
+      </ul>
+   {% else %}
+      <h2>Sorry this page does not exist...</h2>
+   {% endif %}
+{% endblock %}
