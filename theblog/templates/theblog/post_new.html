@@ -14,4 +14,14 @@
   </form>
 </div>
 
+
+<script>
+  //Ver nos comentários outras formas de usar essa lógica sem JS.
+  //https://www.youtube.com/watch?v=TAH01Iy5AuE
+
+  //Se em forms estiver 'type': 'hidden' e na linha debaixo fizer let name = user.username, irá dar o seguinte erro: '(Hidden field author) Select a valid choice. That choice is not one of the available choices'. Neste caso o Django necessita do id do usuário.
+  let name = "{{user.id}}" 
+  document.getElementById('userid').value = name
+</script>
+
 {% endblock %}
