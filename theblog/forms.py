@@ -10,7 +10,7 @@ for item in categories:
 class PostForm(forms.ModelForm):
   class Meta:
     model = Post
-    fields = ['title', 'title_tag', 'author', 'category', 'body']
+    fields = ['title', 'title_tag', 'author', 'category', 'body'] #tá pegando do model. Já no forms.py de members, estamos criando ali msm no form
 
     widgets = {
       'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Write a title here'}),
