@@ -5,13 +5,19 @@
 {% endblock %}
 
 {% block content %}
-<h1>Edit Post</h1>
-<div class="form-group">
-  <form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" class="btn btn-secondary">Save</button>
-  </form>
-</div>
+
+<!--Somente o autor do post pode editá-lo e precisa estar logado (verificado pela view)-->
+{% if user.id == post.author.id %}
+  <h1>Edit Post</h1>
+  <div class="form-group">
+    <form method="POST">
+      {% csrf_token %}
+      {{form.as_p}}
+      <button type="submit" class="btn btn-secondary">Save</button>
+    </form>
+  </div>
+{% else %}
+  You're not allowed here! (and you know it...)
+{% endif %}
 
 {% endblock %}
