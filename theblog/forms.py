@@ -10,7 +10,7 @@ for item in categories:
 class PostForm(forms.ModelForm):
   class Meta:
     model = Post
-    fields = ['title', 'title_tag', 'author', 'category', 'body'] #tá pegando do model. Já no forms.py de members, estamos criando ali msm no form
+    fields = ['title', 'title_tag', 'author', 'category', 'body', 'snippet', 'header_image'] #tá pegando do model. Já no forms.py de members, estamos criando ali msm no form
 
     widgets = {
       'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Write a title here'}),
@@ -18,16 +18,18 @@ class PostForm(forms.ModelForm):
       'author': forms.TextInput(attrs={'class': 'form-control', 'value': '', 'id': 'userid', 'type': 'hidden'}),
       #'author': forms.Select(attrs={'class': 'form-select'}),
       'category': forms.Select(choices=categories_list,attrs={'class': 'form-select'}),
-      'body': forms.Textarea(attrs={'class': 'form-control'})
+      'body': forms.Textarea(attrs={'class': 'form-control'}),
+      'snippet': forms.Textarea(attrs={'class': 'form-control'})
     }
 
 class EditForm(forms.ModelForm):
   class Meta:
     model = Post
-    fields = ['title', 'title_tag', 'body']
+    fields = ['title', 'title_tag', 'body', 'snippet', 'header_image']
 
     widgets = {
       'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Write a title here'}),
       'title_tag': forms.TextInput(attrs={'class': 'form-control'}),
-      'body': forms.Textarea(attrs={'class': 'form-control'})
+      'body': forms.Textarea(attrs={'class': 'form-control'}),
+      'snippet': forms.Textarea(attrs={'class': 'form-control'})
     }

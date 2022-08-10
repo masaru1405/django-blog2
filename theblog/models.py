@@ -22,13 +22,15 @@ class Category(models.Model):
 
 class Post(models.Model):
   title = models.CharField(max_length=255)
+  header_image = models.ImageField(blank=True, null=True, upload_to='images/%Y/%m/%d/')
   title_tag = models.CharField(max_length=255, default="Blog Post")
   author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
   body = RichTextField(blank=True, null=True)
   #body = models.TextField()
   create = models.DateField(auto_now_add=True)
   category = models.CharField(max_length=255, default='coding')
-  likes = models.ManyToManyField(User, related_name='blog_posts')
+  snippet = models.CharField(max_length=255)
+  likes = models.ManyToManyField(User, blank=True, related_name='blog_posts')
 
   def __str__(self):
     return self.title + '  | ' + str(self.author)

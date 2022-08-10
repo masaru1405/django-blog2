@@ -11,7 +11,13 @@
       - <small>{{post.author}}</small>
       - <small>{{post.create}}</small>
     </li>
-    <p>{{post.body|slice:":100"|safe}}</p>
+    
+    {{post.snippet}}
+
+    {% comment %}
+    {{post.body|slice:":100"|safe}}
+    {% endcomment %}
+
   {% endfor %}
 </ul>
 
