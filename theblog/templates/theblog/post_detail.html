@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
   {{post.title_tag}}
 {% endblock %}
@@ -41,4 +43,50 @@
     <a href="{% url 'update_post' post.id %}" class="btn btn-secondary">Edit</a> |
     <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
   {% endif %}
+
+  <br><br>
+  <div class="card mb-3">
+    <div class="row no-gutters">
+      {% if post.author.profile.profile_pic %}
+        <div class="col-md-2">
+          <a href="{% url 'show_profile' post.author.profile.id %}">
+            <img src="{{post.author.profile.profile_pic.url}}" width=100 height=100 class="rounded-circle">
+          </a>
+        </div>
+      {% else %}
+        <div class="col-md-2">
+          <a href="{% url 'show_profile' post.author.profile.id %}">
+            <img src="{% static 'img/default_avatar2.png' %}" width=100 height=100 class="rounded-circle">
+          </a>
+        </div>
+      {% endif %}
+      <div class="col-md-10">
+        <div class="card-body">
+          <h5 class="card-title">{{post.author.first_name}} {{post.author.last_name}}</h5>
+          <p class="small text-muted">
+            {% if post.author.profile.website_url %}
+              <a href="{{post.author.profile.website_url }}" target="_blank">Website</a>
+            {% endif %}
+            {% if post.author.profile.facebook %}
+              <a href="{{post.author.profile.facebook_url }}" target="_blank"> | Facebook</a>
+            {% endif %}
+            {% if post.author.profile.twitter %}
+              <a href="{{post.author.profile.twitter_url }}" target="_blank"> | Twitter</a>
+            {% endif %}
+            {% if post.author.profile.instagram_url %}
+              <a href="{{post.author.profile.instagram_url }}" target="_blank"> | Instagram</a>
+            {% endif %}
+            {% if post.author.profile.linkedin_url %}
+              <a href="{{post.author.profile.linkedin_url }}" target="_blank"> | Linkedin</a>
+            {% endif %}
+            {% if post.author.profile.pinterest_url %}
+              <a href="{{post.author.profile.pinterest_url }}" target="_blank"> | Pinterest</a>
+            {% endif %}
+          </p>
+          <p class="card-text">{{post.author.profile.bio}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+   <h1>User Profile</h1>
+
+   {% if user_profile.profile_pic %}
+      <img src="{{ user_profile.profile_pic.url }}" alt="">
+   {% else %}
+      <img src="{% static 'img/default_avatar2.png' %}" alt="">
+   {% endif %}
+
+   <p>{{user_profile.user.first_name}}</p>
+
+   {% if user.is_authenticated and user_profile.user == user %}
+      <a href="{% url 'edit_profile_page' user.id %}">
+         <button class="btn btn-primary">Edit Profile</button>
+      </a>
+   {% endif %}
+
+{% endblock %}

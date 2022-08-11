@@ -38,14 +38,22 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'register' %}">Register</a>
           </li>
-        {% endif %}    
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+          <li class="nav-item dropdown"> 
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+              {{user.username}}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'show_profile' user.id %}"> Show Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'edit_profile_page' user.id %}">Edit Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'edit_settings' %}"> Edit Settings</a></li>  
+            </ul>
+          </li>
+        {% endif %}
       </ul>
     </div>
-    {% if user.is_authenticated %}
-      <a class="navbar-brand" href="{% url 'edit_profile' %}">
-        <img src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-        {{user.username}}
-      </a>
-    {% endif %}
   </div>
 </nav>

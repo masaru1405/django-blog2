@@ -43,4 +43,16 @@ class Post(models.Model):
   def get_absolute_url(self):
     return reverse('detail_post', args=[str(self.id)])
 
+class Profile(models.Model):
+  user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+  bio = models.TextField()
+  profile_pic = models.ImageField(blank=True, null=True, upload_to='images/profiles/')
+  website_url = models.CharField(max_length=255, blank=True, null=True)
+  facebook_url = models.CharField(max_length=255, blank=True, null=True)
+  twitter_url = models.CharField(max_length=255, blank=True, null=True)
+  instagram_url = models.CharField(max_length=255, blank=True, null=True)
+  pinterest_url = models.CharField(max_length=255, blank=True, null=True)
+  linkedin_url = models.CharField(max_length=255, blank=True, null=True)
 
+  def __str__(self):
+    return str(self.user)
