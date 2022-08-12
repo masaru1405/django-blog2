@@ -6,7 +6,7 @@ from django.views.generic import CreateView, UpdateView, DetailView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import SignUpForm, EditProfileForm
+from .forms import SignUpForm, EditProfileForm, CreateProfileForm
 
 from theblog.models import Profile
 
@@ -48,3 +48,13 @@ class EditProfilePageView(LoginRequiredMixin, UpdateView):
     context = super(EditProfilePageView, self).get_context_data(*args, **kwargs)
     context['user_profile'] = user_profile
     return context
+
+class CretaProfilePageView(LoginRequiredMixin, CreateView):
+  model = Profile
+  template_name = "registration/create_profile.html"
+  form_class = CreateProfileForm
+  success_url = reverse_lazy('home')
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
