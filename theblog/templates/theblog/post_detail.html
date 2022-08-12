@@ -16,6 +16,9 @@
   <p>{{post.body|safe}}</p>
   <br>
 
+  <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+  <br><br>
+
   <!--Somente usuario autenticado e que não seja o autor do post podem dar like-->
   {% if user.is_authenticated and post.author != user %} <!--não fazer user.username-->
     <form action="{% url 'like_post' post.id %}" method="POST">
@@ -37,11 +40,24 @@
   {{total_likes}} Likes
   <br><br>
 
-  <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
   {% if user.is_authenticated and user.id == post.author.id %}
     | 
     <a href="{% url 'update_post' post.id %}" class="btn btn-secondary">Edit</a> |
     <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
+  {% endif %}
+
+  {% if post.comments.all %} <!--related_name='comments' no model-->
+    <h2>Comments...</h2>
+    {% for comment in post.comments.all %}
+      <strong>
+        {{comment.name}} - {{comment.date_added}}
+      </strong>
+      <br>
+      <p>{{comment.body}}</p>
+      <hr>
+    {% endfor %}
+  {% else %}
+    <h2>No comments yet...</h2>
   {% endif %}
 
   <br><br>
