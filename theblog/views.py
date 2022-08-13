@@ -4,8 +4,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 
-from .models import Post, Category
-from .forms import PostForm, EditForm
+from .models import Post, Category, Comment
+from .forms import PostForm, EditForm, CommentForm
 
 
 class HomeView(ListView):
@@ -86,7 +86,6 @@ def CategoryView(request, category):
   context = {'category': category, 'category_post': category_post}
   return render(request, 'theblog/categories.html', context)
 
-
 def LikeView(request, pk):
   post = get_object_or_404(Post, id=request.POST.get('post_id'))
   liked = False
@@ -97,5 +96,21 @@ def LikeView(request, pk):
     post.likes.add(request.user) #add like
     liked = True
   return HttpResponseRedirect(reverse('detail_post', args=[str(pk)]))
+
+class AddCommentView(CreateView):
+  model = Comment
+  template_name = 'theblog/add_comment.html'
+  form_class = CommentForm
+  #success_url = reverse_lazy('home')
+
+  def form_valid(self, form):
+    form.instance.post_comment_id = self.kwargs['pk']
+    #print(form.instance.post_comment_id)
+    return super().form_valid(form)
+  
+  #Após o comentário, volta ao post original
+  def get_success_url(self):
+    return reverse_lazy('detail_post', kwargs={'pk':self.kwargs['pk']})
+
 
 

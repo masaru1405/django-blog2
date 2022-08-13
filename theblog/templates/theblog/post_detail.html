@@ -20,21 +20,25 @@
   <br><br>
 
   <!--Somente usuario autenticado e que não seja o autor do post podem dar like-->
-  {% if user.is_authenticated and post.author != user %} <!--não fazer user.username-->
-    <form action="{% url 'like_post' post.id %}" method="POST">
-      {% csrf_token %}
+  {% if user.is_authenticated  %} 
+    {% if post.author != user %} <!--não fazer user.username-->
+      <form action="{% url 'like_post' post.id %}" method="POST">
+        {% csrf_token %}
 
-      {% if liked %}
-        <button type="submit" name="post_id" value="{{post.id}}" class="btn btn-danger btn-sm">
-          Unlike
-        </button>
-        <small>Você já deu um like ;)</small>
-      {% else %}
-        <button type="submit" name="post_id" value="{{post.id}}" class="btn btn-primary btn-sm">
-          Like
-        </button>
-      {% endif %}
+        {% if liked %}
+          <button type="submit" name="post_id" value="{{post.id}}" class="btn btn-danger btn-sm">
+            Unlike
+          </button>
+          <small>Você já deu um like ;)</small>
+        {% else %}
+          <button type="submit" name="post_id" value="{{post.id}}" class="btn btn-primary btn-sm">
+            Like
+          </button>
+        {% endif %}
+    {% endif %}
     </form>
+  {% else %}
+    <p><a href="{% url 'login' %}">Log in</a> to like this post.</p>
   {% endif %}
   
   {{total_likes}} Likes
@@ -46,21 +50,8 @@
     <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
   {% endif %}
 
-  {% if post.comments.all %} <!--related_name='comments' no model-->
-    <h2>Comments...</h2>
-    {% for comment in post.comments.all %}
-      <strong>
-        {{comment.name}} - {{comment.date_added}}
-      </strong>
-      <br>
-      <p>{{comment.body}}</p>
-      <hr>
-    {% endfor %}
-  {% else %}
-    <h2>No comments yet...</h2>
-  {% endif %}
-
   <br><br>
+  <!--Card Profile-->
   <div class="card mb-3">
     <div class="row no-gutters">
       {% if post.author.profile.profile_pic %}
@@ -104,5 +95,23 @@
       </div>
     </div>
   </div>
+
+    <!--Comments-->
+  {% if post.comments.all %} <!--related_name='comments' no model-->
+    <h2>Comments...</h2>
+    <a href="{% url 'add_comment' post.id %}">Add a new comment</a>
+    <br><br>
+    {% for comment in post.comments.all %}
+      <strong>
+        {{comment.name}} - {{comment.date_added}}
+      </strong>
+      <br>
+      <p>{{comment.body}}</p>
+      <hr>
+    {% endfor %}
+  {% else %}
+    <h2>No comments yet...</h2>
+    <a href="{% url 'add_comment' post.id %}">Add a first comment</a>
+  {% endif %}
 
 {% endblock %}
