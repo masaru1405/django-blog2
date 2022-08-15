@@ -4,12 +4,15 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView
 #from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import SignUpForm, EditProfileForm, CreateProfileForm
+from .forms import SignUpForm, EditProfileForm, CreateProfileForm, LoginForm
 
 from theblog.models import Profile
 
+class LoginInterfaceView(LoginView):
+  form_class = LoginForm
+  template_name = 'registration/login.html'
 
 class UserRegisterView(CreateView):
   form_class = SignUpForm
