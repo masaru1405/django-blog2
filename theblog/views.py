@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,11 +9,27 @@ from .models import Post, Category, Comment
 from .forms import PostForm, EditForm, CommentForm
 
 
+def home(request):
+  posts_list = Post.objects.all().order_by('-create')
+  page = request.GET.get('page', 1)
+  paginator = Paginator(posts_list, 5)
+  try:
+    posts = paginator.page(page)
+  except PageNotAnInteger:
+    posts = paginator.page(1)
+  except EmptyPage:
+    posts = paginator.page(paginator.num_pages)
+  
+  context = {'posts': posts}
+  return render(request, 'theblog/home.html', context)
+
+
 class HomeView(ListView):
   model = Post
   template_name = 'theblog/home.html'
   context_object_name = 'posts'
-  ordering = ['-create']
+  ordering = ['-create'] 
+
 
   '''
   def get_context_data(self, *args, **kwargs):

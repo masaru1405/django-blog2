@@ -1,15 +1,87 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Register{% endblock %}
 
 {% block content %}
-  <h1>Register</h1>
-  <br><br>
-  <div class="form-group">
-    <form method="POST">
-      {% csrf_token %}
-      {{form.as_p}}
-      <button class="btn btn-secondary">Register</button>
-    </form>
-  </div>
+  {% if not user.is_authenticated %}
+  <section class="vh-100">
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="{% static 'img/signup.png' %}" alt="Sample image" class="img-fluid">
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-2">
+            <h1>Register</h1>
+          </div>
+          <form method="POST">
+            {% csrf_token %}
+
+            <!--Username input-->
+            <div class="form-outline mb-4">
+              <!-- <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Username" required> -->
+              {{form.username}}
+              <small class="hint">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small>
+            </div>
+
+            <!--First Name-->
+            <div class="form-outline mb-4">
+              {{form.first_name}}
+            </div>
+
+            <!--Last Name-->
+            <div class="form-outline mb-4">
+              {{form.last_name}}
+            </div>
+
+            <!--Email-->
+            <div class="form-outline mb-4">
+              {{form.email}}
+            </div>
+
+            <!--Password input-->
+            <div class="form-outline mb-4">
+              {{form.password1}}
+              <!-- <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Password" required> -->
+              <ul class="hint">
+                <li><small>Your password can't be too similar to your other personal information.</small></li>
+                <li><small>Your password must contain at least 8 characters.</small></li>
+                <li><small>Your password can't be a commonly used password.</small></li>
+                <li><small>Your password can't be entirely numeric.</small></li>
+              </ul>
+            </div>
+
+            <div class="form-outline mb-2">
+              {{form.password2}}
+              <small class="hint">Enter the same password as befores, for verification.</small>
+              <!-- <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Password" required> -->
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="col-sm-12">
+                {% if form.errors %}
+                  {% for field in form %}
+                    {% for error in field.errors %} 
+                      <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                      </div>
+                    {% endfor %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Register now</button>
+              <p class="small fw-bold mt-2 pt-1 mb-0">Already a member? <a href="{% url 'login' %}" class="link-danger">Login</a></p>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% else %}
+    <h1>You already have an account :)</h1>
+  {% endif %}
 {% endblock %}

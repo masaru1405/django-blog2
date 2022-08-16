@@ -59,7 +59,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 #apps
-                'theblog.context_processors.categories'
+                'theblog.context_processors.categories',
             ],
         },
     },
@@ -131,3 +131,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #development only
+
+#CKEDITOR
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+

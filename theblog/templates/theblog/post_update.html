@@ -10,7 +10,8 @@
 {% if user.id == post.author.id %}
   <h1>Edit Post</h1>
   <div class="form-group">
-    <form method="POST">
+    <!--se não colocarcmos o 'enctype', não iremos conseguir dar upload no header_image-->
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       {{form.media}}
       {{form.as_p}}

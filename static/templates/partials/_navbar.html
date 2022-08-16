@@ -1,3 +1,5 @@
+{% load static %}
+
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container">
     <a class="navbar-brand" href="{% url 'home' %}">My Blog!</a>
@@ -36,8 +38,14 @@
         {% if user.is_authenticated %}
           <li class="nav-item dropdown"> 
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+              {% if user.profile.profile_pic %}
+                <img src="{{ user.profile.profile_pic.url }}" alt="" width="auto" height="40" class="d-inline-block align-text-top rounded-circle">
+              {% else %}
+                <img src="{% static 'img/default_avatar2.png' %}" alt="" width="auto" height="40" class="d-inline-block align-text-top rounded-circle">
+              {% endif %}
+              
               {{user.username}}
+
             </a>
             <ul class="dropdown-menu dropdown-menu-right">
               <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.id %}"> Show Profile</a></li>
