@@ -37,24 +37,28 @@
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
           <li class="nav-item dropdown"> 
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown user_icon" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {% if user.profile.profile_pic %}
                 <img src="{{ user.profile.profile_pic.url }}" alt="" width="auto" height="40" class="d-inline-block align-text-top rounded-circle">
               {% else %}
                 <img src="{% static 'img/default_avatar2.png' %}" alt="" width="auto" height="40" class="d-inline-block align-text-top rounded-circle">
               {% endif %}
-              
-              {{user.username}}
-
             </a>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.id %}"> Show Profile</a></li>
+            <ul class="dropdown-menu dropdown-menu-end"> <!--https://stackoverflow.com/questions/68926161/bootstrap-5-dropdown-menu-cut-off-to-the-right-->
+              <li>
+                <a class="dropdown-item" href="{% url 'show_profile' user.profile.id %}">
+                  {{user.first_name}} {{user.last_name}} <br/>
+                  <small>@{{user.username}}</small>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <!-- <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.id %}"> Show Profile</a></li> -->
               {% if user.profile.id %}
                 <li><a class="dropdown-item" href="{% url 'edit_profile_page' user.profile.id %}">Edit Profile</a></li>
               {% else %}
                 <li><a class="dropdown-item" href="{% url 'create_profile_page' %}">Create Profile</a></li>
               {% endif %}
-              <li><a class="dropdown-item" href="{% url 'edit_settings' %}"> Edit Settings</a></li>  
+              <li><a class="dropdown-item" href="{% url 'edit_settings' %}">Edit Settings</a></li>  
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
             </ul>
