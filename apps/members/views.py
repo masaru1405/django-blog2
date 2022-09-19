@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView
 #from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.views import PasswordChangeView, LoginView
+from django.contrib.auth.views import PasswordChangeView, LoginView, PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import SignUpForm, EditProfileForm, CreateProfileForm, LoginForm
 
@@ -61,3 +62,13 @@ class CretaProfilePageView(LoginRequiredMixin, CreateView):
   def form_valid(self, form):
     form.instance.user = self.request.user
     return super().form_valid(form)
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+  template_name = 'registration/password_reset.html'
+  email_template_name = 'registration/password_reset_email.html'
+  subject_template_name = 'registration/password_reset_subject'
+  success_message =  "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+  success_url = reverse_lazy('home')
