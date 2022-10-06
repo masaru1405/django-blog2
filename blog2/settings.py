@@ -1,5 +1,9 @@
 from pathlib import Path
+from dotenv import load_dotenv
 import os, sys
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,10 +13,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+hj-l-j^xw*(grz1j=km$bm=n3o&9ugjit3y(v37bak@zy5ib_'
+#SECRET_KEY = 'django-insecure-+hj-l-j^xw*(grz1j=km$bm=n3o&9ugjit3y(v37bak@zy5ib_'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.getenv('DEBUG'))
 
 ALLOWED_HOSTS = []
 
@@ -20,6 +25,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #Colocar os apps no topo para que o Django utilize o template especificado no arquivo url.py para o resetar o password, senão, irá utilizar o template do admin:
+    #https://stackoverflow.com/questions/51859954/how-to-override-my-template-instead-of-django-admin-panel-for-reset-password
+    #ver a resposta do usuário 'Tucker Wray'
+    
+    #apps
+    'theblog',
+    'members',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,9 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
 
-    #apps
-    'theblog',
-    'members',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +129,9 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+if not DEBUG: #se em produção
+    STATIC_ROOT = BASE_DIR / 'static'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -130,8 +143,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #development only
 
 #CKEDITOR
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
@@ -139,3 +150,17 @@ CKEDITOR_ALLOW_NONIMAGE_FILES = False
 #Para indicar onde estão nossos apps
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
+
+
+# email configs (seguindo tutorial para resetar o password: https://dev.to/earthcomfy/django-reset-password-3k0l?signin=true)
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+""" EMAIL_HOST = str(os.getenv('EMAIL_HOST'))
+EMAIL_USE_TLS = True
+EMAIL_PORT = str(os.getenv('EMAIL_PORT'))
+EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
+EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD')) """
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '5e1587e9d2756b'
+EMAIL_HOST_PASSWORD = '1cfc42e2596ba0'
+EMAIL_PORT = '2525'

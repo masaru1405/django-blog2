@@ -8,6 +8,9 @@ for item in categories:
   categories_list.append(item)
 
 class PostForm(forms.ModelForm):
+
+  #category = forms.ModelChoiceField(queryset=Category.objects, empty_label=None, widget=forms.RadioSelect)
+  
   class Meta:
     model = Post
     fields = ['title', 'title_tag', 'author', 'category', 'body', 'snippet', 'header_image'] #tá pegando do model. Já no forms.py de members, estamos criando ali msm no form

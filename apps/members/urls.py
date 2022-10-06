@@ -9,5 +9,9 @@ urlpatterns = [
   path('<int:pk>/profile', views.ShowProfilePageView.as_view(), name='show_profile'),
   path('<int:pk>/edit-profile-page', views.EditProfilePageView.as_view(), name='edit_profile_page'),
   path('create-profile-page/', views.CretaProfilePageView.as_view(), name='create_profile_page'),
-  path('password-reset', views.ResetPasswordView.as_view(), name='password_reset')
+
+  #Password Reset
+  path('password-reset', views.ResetPasswordView.as_view(), name='password_reset'),
+  path('password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
+  path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete')
 ]
